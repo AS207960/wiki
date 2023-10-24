@@ -298,7 +298,8 @@ module.exports = () => {
         defaultEditor: 'markdown',
         tfaIsActive: false,
         isActive: true,
-        isVerified: true
+        isVerified: true,
+        isRoot: true,
       })
       await adminUser.$relatedQuery('groups').relate(adminGroup.id)
 
@@ -314,7 +315,8 @@ module.exports = () => {
         tfaIsActive: false,
         isSystem: true,
         isActive: true,
-        isVerified: true
+        isVerified: true,
+        isGuest: true,
       })
       await guestUser.$relatedQuery('groups').relate(guestGroup.id)
       if (WIKI.config.db.type !== 'cockroach' && (adminUser.id !== 1 || guestUser.id !== 2)) {

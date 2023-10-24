@@ -36,7 +36,9 @@ module.exports = class User extends Model {
         isActive: {type: 'boolean'},
         isVerified: {type: 'boolean'},
         createdAt: {type: 'string'},
-        updatedAt: {type: 'string'}
+        updatedAt: {type: 'string'},
+        isRoot: {type: 'boolean'},
+        isGuest: {type: 'boolean'},
       }
     }
   }
@@ -870,7 +872,7 @@ module.exports = class User extends Model {
   }
 
   static async getGuestUser () {
-    const user = await WIKI.models.users.query().findById(2).withGraphJoined('groups').modifyGraph('groups', builder => {
+    const user = await WIKI.models.users.query().where('isGuest', true).withGraphJoined('groups').modifyGraph('groups', builder => {
       builder.select('groups.id', 'permissions')
     })
     if (!user) {
@@ -882,7 +884,7 @@ module.exports = class User extends Model {
   }
 
   static async getRootUser () {
-    let user = await WIKI.models.users.query().findById(1)
+    let user = await WIKI.models.users.query().where('isRoot', true)
     if (!user) {
       WIKI.logger.error('CRITICAL ERROR: Root Administrator user is missing!')
       process.exit(1)
