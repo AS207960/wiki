@@ -151,6 +151,7 @@ exports.up = knex => {
       table.string('publishEndDate')
       switch (WIKI.config.db.type) {
         case 'postgres':
+        case 'cockroach':
         case 'sqlite':
           table.text('content')
           table.text('render')

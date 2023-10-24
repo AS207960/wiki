@@ -196,6 +196,7 @@ module.exports = () => {
       await WIKI.models.navigation.query().truncate()
       switch (WIKI.config.db.type) {
         case 'postgres':
+        case 'cockroach':
           await WIKI.models.knex.raw('TRUNCATE groups, users CASCADE')
           break
         case 'mysql':
@@ -250,7 +251,7 @@ module.exports = () => {
         ]),
         isSystem: true
       })
-      if (adminGroup.id !== 1 || guestGroup.id !== 2) {
+      if (WIKI.config.db.type !== 'cockroach' && (adminGroup.id !== 1 || guestGroup.id !== 2)) {
         throw new Error('Incorrect groups auto-increment configuration! Should start at 0 and increment by 1. Contact your database administrator.')
       }
 

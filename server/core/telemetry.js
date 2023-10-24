@@ -63,6 +63,7 @@ module.exports = {
           dbVersion = _.get(resultMSSQL, '[0].version', 'Unknown')
           break
         case 'postgres':
+        case 'cockroach':
           dbVersion = _.get(WIKI.models, 'knex.client.version', 'Unknown')
           break
         case 'sqlite':
