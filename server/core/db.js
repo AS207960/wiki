@@ -143,8 +143,9 @@ module.exports = {
         async afterCreate(conn, done) {
           // -> Set Connection App Name
           switch (WIKI.config.db.type) {
-            case 'postgres':
             case 'cockroach':
+              await conn.query(`set serial_normalization = sql_sequence_cached`)
+            case 'postgres':
               await conn.query(`set application_name = 'Wiki.js'`)
               // -> Set schema if it's not public
               if (WIKI.config.db.schema && WIKI.config.db.schema !== 'public') {
