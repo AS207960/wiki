@@ -8,7 +8,7 @@ exports.up = knex => {
   return knex.schema
     .createTable('userAvatars', table => {
       if (dbCompat.charset) { table.charset('utf8mb4') }
-      table.integer('id').primary()
+      table.integer('id').notNullable().primary()
       if (dbCompat.blobLength) {
         table.specificType('data', 'LONGBLOB').notNullable()
       } else {

@@ -34,7 +34,7 @@ exports.up = knex => {
     // ASSET DATA --------------------------
     .createTable('assetData', table => {
       if (dbCompat.charset) { table.charset('utf8mb4') }
-      table.integer('id').primary()
+      table.integer('id').notNullable().primary()
       if (dbCompat.blobLength) {
         table.specificType('data', 'LONGBLOB').notNullable()
       } else {
@@ -173,7 +173,7 @@ exports.up = knex => {
     // PAGE TREE ---------------------------
     .createTable('pageTree', table => {
       if (dbCompat.charset) { table.charset('utf8mb4') }
-      table.integer('id').unsigned().primary()
+      table.integer('id').unsigned().notNullable().primary()
       table.string('path').notNullable()
       table.integer('depth').unsigned().notNullable()
       table.string('title').notNullable()
