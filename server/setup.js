@@ -317,7 +317,7 @@ module.exports = () => {
         isVerified: true
       })
       await guestUser.$relatedQuery('groups').relate(guestGroup.id)
-      if (adminUser.id !== 1 || guestUser.id !== 2) {
+      if (WIKI.config.db.type !== 'cockroach' && (adminUser.id !== 1 || guestUser.id !== 2)) {
         throw new Error('Incorrect users auto-increment configuration! Should start at 0 and increment by 1. Contact your database administrator.')
       }
 
