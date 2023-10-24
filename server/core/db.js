@@ -83,6 +83,13 @@ module.exports = {
           dbConfig.ssl = (sslOptions === true) ? { rejectUnauthorized: true } : sslOptions
         }
         break
+      case 'cockroach':
+        dbClient = 'cockroachdb'
+
+        if (dbUseSSL && _.isPlainObject(dbConfig)) {
+          dbConfig.ssl = (sslOptions === true) ? { rejectUnauthorized: true } : sslOptions
+        }
+        break
       case 'mariadb':
       case 'mysql':
         dbClient = 'mysql2'
