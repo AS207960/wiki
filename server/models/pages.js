@@ -436,8 +436,8 @@ module.exports = class Page extends Model {
         js: scriptJs,
         css: scriptCss
       })
-    }).where('id', ogPage.id)
-    let page = await WIKI.models.pages.getPageFromDb(ogPage.id)
+    }).where('id', _.isInteger(ogPage.id) ? ogPage.id : parseInt(ogPage.id, 10))
+    let page = await WIKI.models.pages.getPageFromDb(_.isInteger(ogPage.id) ? ogPage.id : parseInt(ogPage.id, 10))
 
     // -> Save Tags
     await WIKI.models.tags.associateTags({ tags: opts.tags, page })
@@ -447,7 +447,8 @@ module.exports = class Page extends Model {
     WIKI.events.outbound.emit('deletePageFromCache', page.hash)
 
     // -> Update Search Index
-    const pageContents = await WIKI.models.pages.query().findById(page.id).select('render')
+    const pageContents = await WIKI.models.pages.query()
+        .findById(_.isInteger(page.id) ? page.id : parseInt(page.id, 10)).select('render')
     page.safeContent = WIKI.models.pages.cleanHTML(pageContents.render)
     await WIKI.data.searchEngine.updated(page)
 
@@ -470,7 +471,7 @@ module.exports = class Page extends Model {
       }
 
       await WIKI.models.pages.movePage({
-        id: page.id,
+        id: _.isInteger(page.id) ? page.id : parseInt(page.id, 10),
         destinationLocale: opts.locale,
         destinationPath: opts.path,
         user: opts.user
@@ -478,12 +479,13 @@ module.exports = class Page extends Model {
     } else {
       // -> Update title of page tree entry
       await WIKI.models.knex.table('pageTree').where({
-        pageId: page.id
+        pageId: _.isInteger(page.id) ? page.id : parseInt(page.id, 10)
       }).update('title', page.title)
     }
 
     // -> Get latest updatedAt
-    page.updatedAt = await WIKI.models.pages.query().findById(page.id).select('updatedAt').then(r => r.updatedAt)
+    page.updatedAt = await WIKI.models.pages.query()
+        .findById(_.isInteger(page.id) ? page.id : parseInt(page.id, 10)).select('updatedAt').then(r => r.updatedAt)
 
     return page
   }
