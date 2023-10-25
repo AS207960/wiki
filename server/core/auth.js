@@ -144,7 +144,9 @@ module.exports = {
       if (mustRevalidate) {
         const jwtPayload = jwt.decode(securityHelper.extractJWT(req))
         try {
-          const newToken = await WIKI.models.users.refreshToken(jwtPayload.id)
+          const newToken = await WIKI.models.users.refreshToken(
+              _.isInteger(jwtPayload.id) ? jwtPayload.id : parseInt(jwtPayload.id, 10)
+          )
           user = newToken.user
           user.permissions = user.getGlobalPermissions()
           user.groups = user.getGroups()
