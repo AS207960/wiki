@@ -161,6 +161,7 @@ module.exports = class Storage extends Model {
             }, target.key)
           }
         } catch (err) {
+          WIKI.logger.warn(err)
           // -> Save initialization error
           await WIKI.models.storage.query().patch({
             state: {
