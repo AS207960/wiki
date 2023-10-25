@@ -454,6 +454,7 @@ module.exports = {
       this.exportStatus.status = 'success'
       this.exportStatus.progress = 100
     } catch (err) {
+      WIKI.logger.error(`Error exporting data ${err}`);
       this.exportStatus.status = 'error'
       this.exportStatus.message = err.message
     }
