@@ -1052,11 +1052,11 @@ module.exports = class Page extends Model {
   static async savePageToCache(page) {
     const cachePath = path.resolve(WIKI.ROOTPATH, WIKI.config.dataPath, `cache/${page.hash}.bin`)
     await fs.outputFile(cachePath, WIKI.models.pages.cacheSchema.encode({
-      id: page.id,
-      authorId: page.authorId,
+      id: _.isInteger(page.id) ? page.id : parseInt(page.id, 10),
+      authorId: _.isInteger(page.authorId) ? page.authorId : parseInt(page.authorId, 10),
       authorName: page.authorName,
       createdAt: page.createdAt,
-      creatorId: page.creatorId,
+      creatorId: _.isInteger(page.creatorId) ? page.creatorId : parseInt(page.creatorId, 10),
       creatorName: page.creatorName,
       description: page.description,
       editorKey: page.editorKey,

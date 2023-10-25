@@ -418,7 +418,8 @@ module.exports = {
       tfaIsActive: false,
       isSystem: true,
       isActive: true,
-      isVerified: true
+      isVerified: true,
+      isGuest: true,
     })
     await guestUser.$relatedQuery('groups').relate(guestGroup.id)
 
